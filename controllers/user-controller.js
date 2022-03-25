@@ -41,7 +41,7 @@ const userController = {
 
   // update User by id
   updateUser({ params, body }, res) {
-    user
+    User
       .findOneAndUpdate({ _id: params.id }, body, {
         new: true,
         runValidators: true,
@@ -58,11 +58,44 @@ const userController = {
 
   // delete user
   deleteUser({ params }, res) {
-    user
+    User.findOneAndDelete({ _id: params.id })
+      .then((dbuserData) => res.json(dbuserData))
+      .catch((err) => res.json(err));
+  },
+
+//create friend
+   createFriend({ body }, res) {
+    User.create(body)
+      .then((dbUserData) => res.json(dbUserData))
+      .catch((err) => res.json(err));
+  },
+
+  // delete user
+  deleteFriend({ params }, res) {
+    User
       .findOneAndDelete({ _id: params.id })
       .then((dbuserData) => res.json(dbuserData))
       .catch((err) => res.json(err));
   },
+
+
+
 };
+
+
+//MB need to add controller for //add 3_19  /api/users/:id/friends/:friendId
+//router.route("/:id/friends/:friendId")
+//Creating a friend and deleting a friend
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = userController;
