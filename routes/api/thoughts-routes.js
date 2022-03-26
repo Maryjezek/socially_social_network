@@ -5,6 +5,7 @@ const {
   addThought,
   removeThought,
   updateThought,
+  addReaction
 } = require("../../controllers/thoughts-controller");
 
 //Get all thoughts

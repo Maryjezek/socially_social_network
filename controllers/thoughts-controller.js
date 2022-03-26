@@ -20,11 +20,11 @@ const thoughtController = {
   // get thoughts by id
   getThoughtById({ params }, res) {
     Thought.findById({ _id: params.id })
-      .populate({
-        path: "thoughts",
-        select: "-__v",
-      })
-      .select("-__v")
+      // .populate({
+      //   path: "thoughts",
+      //   select: "-__v",
+      // })
+      // .select("-__v")
       .then((dbUserData) => res.json(dbUserData))
       .catch((err) => {
         console.log(err);
@@ -96,13 +96,12 @@ const thoughtController = {
 
 
   //create Reaction
-  createReaction({ body, params }, res) {
+  addReaction({ body, params }, res) {
     User.findOneAndUpdate(
       { _id: params.id },
       { $addToSet: { reaction: body } }
     )
-      // .populate("friends")
-      .then((dbUserData) => res.json(dbUserData))
+     .then((dbUserData) => res.json(dbUserData))
       .catch((err) => res.json(err));
   },
 
