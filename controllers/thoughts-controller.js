@@ -3,13 +3,13 @@ const { Thought, User } = require("../models");
 const thoughtController = {
   // get all thoughts
   getAllThoughts(req, res) {
-    Thought.find({})
-      .populate({
-        path: "thoughts",
-        select: "-__v",
-      })
-      .select("-__v")
-      .sort({ _id: -1 })
+    Thought.find()
+      // .populate({
+      //   path: "thoughts",
+      //   select: "-__v",
+      //})
+      //  .select("-__v")
+      //.sort({ _id: -1 })
       .then((dbUserData) => res.json(dbUserData))
       .catch((err) => {
         console.log(err);
@@ -36,13 +36,13 @@ const thoughtController = {
   addThought({ params, body }, res) {
     console.log(params);
     Thought.create(body)
-      .then(({ _id }) => {
-        return User.findOneAndUpdate(
-          { _id: params.userId },
-          { $push: { thoughts: _id } },
-          { new: true }
-        );
-      })
+      // .then(({ _id }) => {
+      //   return User.findOneAndUpdate(
+      //     { _id: params.userId },
+      //     { $push: { thoughts: _id } },
+      //     { new: true }
+      //   );
+      // })
       .then((dbUserData) => {
         console.log(dbUserData);
         if (!dbUserData) {
@@ -54,7 +54,7 @@ const thoughtController = {
       .catch((err) => res.json(err));
   },
 
-  // add reply to thought
+  // update thought
   updateThought({ params, body }, res) {
     Thought.findOneAndUpdate(
       { _id: params.thoughtId },
@@ -93,6 +93,22 @@ const thoughtController = {
       })
       .catch((err) => res.json(err));
   },
+
+
+  //create Reaction
+  createReaction({ body, params }, res) {
+    User.findOneAndUpdate(
+      { _id: params.id },
+      { $addToSet: { reaction: body } }
+    )
+      // .populate("friends")
+      .then((dbUserData) => res.json(dbUserData))
+      .catch((err) => res.json(err));
+  },
+
+
+
+
 };
 
 module.exports = thoughtController;

@@ -33,11 +33,4 @@ const ReactionSchema = new Schema(
 );
 
 
-
-ReactionSchema.virtual('reactionCount').get(function() {
-  return this.replies.length;
-});
-
-const Reaction = model('Reaction', ReactionSchema);
-
 module.exports = Reaction;

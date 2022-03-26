@@ -41,11 +41,10 @@ const userController = {
 
   // update User by id
   updateUser({ params, body }, res) {
-    User
-      .findOneAndUpdate({ _id: params.id }, body, {
-        new: true,
-        runValidators: true,
-      })
+    User.findOneAndUpdate({ _id: params.id }, body, {
+      new: true,
+      runValidators: true,
+    })
       .then((dbuserData) => {
         if (!dbuserData) {
           res.status(404).json({ message: "No user found with this id!" });
@@ -63,39 +62,31 @@ const userController = {
       .catch((err) => res.json(err));
   },
 
-//create friend
-   createFriend({ body }, res) {
-    User.create(body)
+  //create friend
+  createFriend({ body, params }, res) {
+    User.findOneAndUpdate(
+      { _id: params.id },
+      { $addToSet: { friends: params.friendId } }
+    )
+      // .populate("friends")
       .then((dbUserData) => res.json(dbUserData))
       .catch((err) => res.json(err));
   },
 
   // delete user
   deleteFriend({ params }, res) {
-    User
-      .findOneAndDelete({ _id: params.id })
+    User.findOneAndUpdate(
+      { _id: params.id },
+      { $pull: { friends: params.friendId } },
+      { new: true }
+    )
       .then((dbuserData) => res.json(dbuserData))
       .catch((err) => res.json(err));
   },
-
-
-
 };
-
 
 //MB need to add controller for //add 3_19  /api/users/:id/friends/:friendId
 //router.route("/:id/friends/:friendId")
 //Creating a friend and deleting a friend
-
-
-
-
-
-
-
-
-
-
-
 
 module.exports = userController;
