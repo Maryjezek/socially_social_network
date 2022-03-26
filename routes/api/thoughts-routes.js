@@ -10,14 +10,14 @@ const {
 
 //Get all thoughts
 // /api/users
-router.route("/").get(getAllThoughts).post(addThought);
+router.route("/").get(getAllThoughts);
 
 // /api/thoughts/<userId>
-router.route("/:userId");
-
+router.route("/:userId")
+.post(addThought);
 // /api/thoughts/<userId>/<thoughtId>
 router
-  .route("/:userId/:thoughtId")
+  .route("/:thoughtId")
   .get(getThoughtById)
   .put(updateThought)
   .delete(removeThought);
